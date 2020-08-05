@@ -1,0 +1,22 @@
+PODS:
+  - crash_report (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+
+DEPENDENCIES:
+  - crash_report (from `.symlinks/plugins/crash_report/ios`)
+  - Flutter (from `Flutter`)
+
+EXTERNAL SOURCES:
+  crash_report:
+    :path: ".symlinks/plugins/crash_report/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  crash_report: ba1b5b9b4078003d73e27bdff3fd95dfb2851aa5
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.8.4
