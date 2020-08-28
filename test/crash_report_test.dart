@@ -1,23 +1,16 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:crash_report/crash_report.dart';
+import 'package:logger/logger.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('crash_report');
-
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() {
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
-    });
+  test('setupReport', () async {
+    await CrashReport.instance.init(Logger());
+    expect(true, true);
   });
 
-  tearDown(() {
-    channel.setMockMethodCallHandler(null);
-  });
-
-  test('getPlatformVersion', () async {
-    expect(await CrashReport.setup, '42');
+  test('testCrash', () async {
+    await CrashReport.instance.crash();
   });
 }

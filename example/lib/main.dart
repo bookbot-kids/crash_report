@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:crash_report/crash_report.dart';
+import 'package:logger/logger.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,9 +28,9 @@ class _MyAppState extends State<MyApp> {
     String platformVersion = "";
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      platformVersion = await CrashReport.setup();
+      await CrashReport.instance.init(Logger());
     } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      platformVersion = 'Failed to setup crash report.';
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -55,7 +56,7 @@ class _MyAppState extends State<MyApp> {
               Text('Running on: $_platformVersion\n'),
               FlatButton(
                   onPressed: () async {
-                    await CrashReport.crash();
+                    await CrashReport.instance.crash();
                   },
                   child: Text("Force crash"))
             ],
