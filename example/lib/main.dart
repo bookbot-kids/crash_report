@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
     String platformVersion = "";
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      await CrashReport.instance.init(Logger());
+      await CrashReport.init(Logger());
     } on PlatformException {
       platformVersion = 'Failed to setup crash report.';
     }
@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
               Text('Running on: $_platformVersion\n'),
               FlatButton(
                   onPressed: () async {
-                    await CrashReport.instance.crash();
+                    await CrashReport.shared.crash();
                   },
                   child: Text("Force crash"))
             ],

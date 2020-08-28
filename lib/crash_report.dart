@@ -12,15 +12,15 @@ class CrashReport {
   CrashReport._privateConstructor();
 
   /// singleton instance
-  static final CrashReport instance = CrashReport._privateConstructor();
+  static final CrashReport shared = CrashReport._privateConstructor();
 
   final MethodChannel _channel = const MethodChannel('crash_report');
   Logger _logger;
 
-  Future init(Logger logger) async {
-    _logger = logger;
-    await _channel.invokeMethod('setup');
-    await collectCrashReports();
+  static Future init(Logger logger) async {
+    shared._logger = logger;
+    await shared._channel.invokeMethod('setup');
+    await shared.collectCrashReports();
   }
 
   /// Test native crash

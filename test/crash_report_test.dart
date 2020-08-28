@@ -6,11 +6,11 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   test('setupReport', () async {
-    await CrashReport.instance.init(Logger());
+    await CrashReport.init(Logger());
     expect(true, true);
   });
 
   test('testCrash', () async {
-    await CrashReport.instance.crash();
+    await CrashReport.shared.crash();
   });
 }
