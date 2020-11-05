@@ -19,8 +19,10 @@ class CrashReport {
 
   static Future init(Logger logger) async {
     shared._logger = logger;
-    await shared._channel.invokeMethod('setup');
-    await shared.collectCrashReports();
+    if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
+      await shared._channel.invokeMethod('setup');
+      await shared.collectCrashReports();
+    }
   }
 
   /// Test native crash
