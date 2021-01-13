@@ -50,9 +50,7 @@ class CrashReport {
   /// Collect all crash report files saved in ios & android device
   /// The log file is a text file with following content: crashName####stacktrace
   Future<void> collectCrashReports() async {
-    if (UniversalPlatform.isAndroid ||
-        UniversalPlatform.isIOS ||
-        UniversalPlatform.isMacOS) {
+    if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
       try {
         final dir = await getApplicationSupportDirectory();
         if (await dir.exists()) {
