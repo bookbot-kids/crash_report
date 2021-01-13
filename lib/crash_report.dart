@@ -40,9 +40,9 @@ class CrashReport {
   ///
   /// [runZoned]:(https://api.flutter.dev/flutter/dart-async/runZoned.html)
   void executeInZoned(Function func) {
-    runZoned(() {
+    runZonedGuarded(() {
       func();
-    }, onError: (e, stackTrace) {
+    }, (e, stackTrace) {
       _logger?.wtf('runZoned error $e', e, stackTrace);
     });
   }
@@ -50,7 +50,9 @@ class CrashReport {
   /// Collect all crash report files saved in ios & android device
   /// The log file is a text file with following content: crashName####stacktrace
   Future<void> collectCrashReports() async {
-    if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
+    if (UniversalPlatform.isAndroid ||
+        UniversalPlatform.isIOS ||
+        UniversalPlatform.isMacOS) {
       try {
         final dir = await getApplicationSupportDirectory();
         if (await dir.exists()) {
