@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  logger: ^0.9.4
+  logger: ^1.0.0
 
   crash_report:
     # When depending on this package from a real application you should use:
