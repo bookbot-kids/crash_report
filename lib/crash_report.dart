@@ -16,7 +16,7 @@ class CrashReport {
   static CrashReport shared = CrashReport();
 
   final MethodChannel _channel = const MethodChannel('crash_report');
-  Logger _logger;
+  Logger? _logger;
 
   static Future init(Logger logger) async {
     shared._logger = logger;
@@ -34,7 +34,7 @@ class CrashReport {
   /// Record flutter error,
   /// If you want to ignore logger then return `true` in `callback`
   Future<void> recordFlutterError(FlutterErrorDetails details,
-      {bool Function(dynamic exception) callback}) async {
+      {bool Function(dynamic exception)? callback}) async {
     if (callback == null || !callback(details.exception)) {
       _logger?.wtf('flutter error ${details.exception}', details.exception,
           details.stack);
@@ -47,7 +47,7 @@ class CrashReport {
   ///
   /// [runZoned]:(https://api.flutter.dev/flutter/dart-async/runZoned.html)
   void executeInZoned(Function func,
-      {bool Function(dynamic exception) callback}) {
+      {bool Function(dynamic exception)? callback}) {
     runZonedGuarded(() {
       func();
     }, (e, stackTrace) {
@@ -77,7 +77,7 @@ class CrashReport {
               var content = await f.readAsString();
               var parts = content.split('####');
               var errorName = parts.length == 2 ? parts[0] : 'CrashReport';
-              _logger.wtf(errorName, Exception(errorName),
+              _logger?.wtf(errorName, Exception(errorName),
                   StackTrace.fromString(content));
 
               // delete file after sending
