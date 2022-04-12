@@ -34,8 +34,8 @@ class CrashReport {
   /// Record flutter error,
   /// If you want to ignore logger then return `true` in `callback`
   Future<void> recordFlutterError(FlutterErrorDetails details,
-      {bool Function(dynamic exception)? callback}) async {
-    if (callback == null || !callback(details.exception)) {
+      {bool Function(dynamic exception, dynamic stacktrace)? callback}) async {
+    if (callback == null || !callback(details.exception, details.stack)) {
       _logger?.wtf('flutter error ${details.exception}', details.exception,
           details.stack);
     }
@@ -47,11 +47,11 @@ class CrashReport {
   ///
   /// [runZoned]:(https://api.flutter.dev/flutter/dart-async/runZoned.html)
   void executeInZoned(Function func,
-      {bool Function(dynamic exception)? callback}) {
+      {bool Function(dynamic exception, dynamic stacktrace)? callback}) {
     runZonedGuarded(() {
       func();
     }, (e, stackTrace) {
-      if (callback == null || !callback(e)) {
+      if (callback == null || !callback(e, stackTrace)) {
         _logger?.wtf('runZoned error $e', e, stackTrace);
       }
     });
