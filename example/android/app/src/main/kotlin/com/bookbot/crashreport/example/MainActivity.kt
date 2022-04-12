@@ -1,4 +1,4 @@
-package com.bookbot.crash_report.crash_report_example
+package com.bookbot.crashreport.example
 
 import io.flutter.embedding.android.FlutterActivity
 

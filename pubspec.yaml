@@ -1,7 +1,6 @@
 name: crash_report
 description: A new flutter plugin project.
 version: 0.0.1
-author:
 homepage:
 
 environment:
@@ -11,10 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  logger: ^1.0.0
+  logger: ^1.1.0
   universal_platform: ^1.0.0+1
   universal_io: ^2.0.4
-  path_provider: ^2.0.2
+  path_provider: ^2.0.9
+  singleton: ^0.0.3-nullsafety
 
 dev_dependencies:
   flutter_test:

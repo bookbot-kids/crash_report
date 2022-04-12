@@ -4,15 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:singleton/singleton.dart';
 import 'package:universal_io/io.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 /// Crash report tool
 class CrashReport {
+  factory CrashReport() =>
+      Singleton.lazy(() => CrashReport._privateConstructor());
   CrashReport._privateConstructor();
-
-  /// singleton instance
-  static final CrashReport shared = CrashReport._privateConstructor();
+  static CrashReport shared = CrashReport();
 
   final MethodChannel _channel = const MethodChannel('crash_report');
   Logger _logger;
@@ -30,20 +31,29 @@ class CrashReport {
     await _channel.invokeMethod('crash');
   }
 
-  /// Record flutter error
-  Future<void> recordFlutterError(FlutterErrorDetails details) async {
-    _logger?.wtf(
-        'flutter error ${details.exception}', details.exception, details.stack);
+  /// Record flutter error,
+  /// If you want to ignore logger then return `true` in `callback`
+  Future<void> recordFlutterError(FlutterErrorDetails details,
+      {bool Function(dynamic exception) callback}) async {
+    if (callback == null || !callback(details.exception)) {
+      _logger?.wtf('flutter error ${details.exception}', details.exception,
+          details.stack);
+    }
   }
 
   /// Execute a function in [runZoned] and handle error logging
   ///
+  /// If you want to ignore logger then return `true` in `callback`
+  ///
   /// [runZoned]:(https://api.flutter.dev/flutter/dart-async/runZoned.html)
-  void executeInZoned(Function func) {
+  void executeInZoned(Function func,
+      {bool Function(dynamic exception) callback}) {
     runZonedGuarded(() {
       func();
     }, (e, stackTrace) {
-      _logger?.wtf('runZoned error $e', e, stackTrace);
+      if (callback == null || !callback(e)) {
+        _logger?.wtf('runZoned error $e', e, stackTrace);
+      }
     });
   }
 
