@@ -13,7 +13,7 @@ dependencies:
   logger: ^1.1.0
   universal_platform: ^1.0.0+1
   universal_io: ^2.0.4
-  path_provider: ^2.0.9
+  path_provider: ^2.0.11
   singleton: ^0.0.3-nullsafety
 
 dev_dependencies:

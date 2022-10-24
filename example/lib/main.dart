@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             children: [
               Text('Running on: $_platformVersion\n'),
-              FlatButton(
+              TextButton(
                   onPressed: () async {
                     await CrashReport.shared.crash();
                   },
