@@ -6,7 +6,6 @@ import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:singleton/singleton.dart';
 import 'package:universal_io/io.dart';
-import 'package:universal_platform/universal_platform.dart';
 
 /// Crash report tool
 class CrashReport {
@@ -20,7 +19,7 @@ class CrashReport {
 
   static Future init(Logger logger) async {
     shared._logger = logger;
-    if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
+    if (Platform.isAndroid || Platform.isIOS) {
       await shared._channel.invokeMethod('setup');
       await shared.collectCrashReports();
     }
@@ -36,8 +35,8 @@ class CrashReport {
   Future<void> recordFlutterError(FlutterErrorDetails details,
       {bool Function(dynamic exception, dynamic stacktrace)? callback}) async {
     if (callback == null || !callback(details.exception, details.stack)) {
-      _logger?.wtf('flutter error ${details.exception}', details.exception,
-          details.stack);
+      _logger?.f('flutter error ${details.exception}',
+          error: details.exception, stackTrace: details.stack);
     }
   }
 
@@ -52,7 +51,7 @@ class CrashReport {
       func();
     }, (e, stackTrace) {
       if (callback == null || !callback(e, stackTrace)) {
-        _logger?.wtf('runZoned error $e', e, stackTrace);
+        _logger?.f('runZoned error $e', error: e, stackTrace: stackTrace);
       }
     });
   }
@@ -60,7 +59,7 @@ class CrashReport {
   /// Collect all crash report files saved in ios & android device
   /// The log file is a text file with following content: crashName####stacktrace
   Future<void> collectCrashReports() async {
-    if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
+    if (Platform.isAndroid || Platform.isIOS) {
       try {
         final dir = await getApplicationSupportDirectory();
         if (await dir.exists()) {
@@ -77,8 +76,9 @@ class CrashReport {
               var content = await f.readAsString();
               var parts = content.split('####');
               var errorName = parts.length == 2 ? parts[0] : 'CrashReport';
-              _logger?.wtf(errorName, Exception(errorName),
-                  StackTrace.fromString(content));
+              _logger?.f(errorName,
+                  error: Exception(errorName),
+                  stackTrace: StackTrace.fromString(content));
 
               // delete file after sending
               await f.delete();
